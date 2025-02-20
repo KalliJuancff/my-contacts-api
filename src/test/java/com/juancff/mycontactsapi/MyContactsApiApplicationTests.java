@@ -67,4 +67,15 @@ class MyContactsApiApplicationTests {
             .body("name", equalTo("Jane Doe"))
             .body("phoneNumber", equalTo("987543210"));
     }
+
+    @Test
+    public void when_get_a_non_existing_contact_by_id_then_return_HTTP_status_code_of_not_found() {
+        given()
+            .pathParams("contactId", 999)
+        .when()
+            .get("/contacts/{contactId}")
+        .then()
+            .statusCode(404)
+            .body("error", equalTo("Contact not found"));
+    }
 }

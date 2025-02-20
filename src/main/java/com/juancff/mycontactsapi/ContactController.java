@@ -1,9 +1,11 @@
 package com.juancff.mycontactsapi;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Map;
 
 @RestController
 public class ContactController {
@@ -15,7 +17,13 @@ public class ContactController {
     }
 
     @GetMapping("/contacts/{contactId}")
-    public ContactDetailsResponse getContact(@PathVariable int contactId) {
-        return new ContactDetailsResponse(contactId, "Jane Doe", "987543210");
+    public ResponseEntity<?> getContact(@PathVariable int contactId) {
+        if (contactId != 1) {
+            Map<String, String> map = Map.of("error", "Contact not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+        }
+
+        ContactDetailsResponse response = new ContactDetailsResponse(contactId, "Jane Doe", "987543210");
+        return ResponseEntity.ok().body(response);
     }
 }
