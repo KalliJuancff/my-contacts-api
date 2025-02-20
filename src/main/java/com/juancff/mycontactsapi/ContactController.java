@@ -1,9 +1,7 @@
 package com.juancff.mycontactsapi;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -14,5 +12,10 @@ public class ContactController {
         URI location = URI.create("/contacts/1");
         ContactResponse response = new ContactResponse(1);
         return ResponseEntity.created(location).body(response);
+    }
+
+    @GetMapping("/contacts/{contactId}")
+    public ContactDetailsResponse getContact(@PathVariable int contactId) {
+        return new ContactDetailsResponse(contactId, "Jane Doe", "987543210");
     }
 }

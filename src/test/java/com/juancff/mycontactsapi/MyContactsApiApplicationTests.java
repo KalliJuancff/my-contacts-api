@@ -38,4 +38,33 @@ class MyContactsApiApplicationTests {
             .header("Location", startsWith("/contacts/"))
             .body("contactId", notNullValue());
     }
+
+    @Test
+    public void when_get_an_existing_contact_by_id_then_return_contact_data_and_HTTP_status_code_of_ok() {
+        String requestBody = """
+            {
+                "name": "Jane Doe",
+                "phoneNumber": "987543210"
+            }
+            """;
+        var contactId = given()
+            .contentType(ContentType.JSON)
+            .body(requestBody)
+        .when()
+            .post("/contacts")
+        .then()
+            .statusCode(201)
+            .extract()
+            .path("contactId");
+
+        given()
+            .pathParams("contactId", contactId)
+        .when()
+            .get("/contacts/{contactId}")
+        .then()
+            .statusCode(200)
+            .body("contactId", equalTo(contactId))
+            .body("name", equalTo("Jane Doe"))
+            .body("phoneNumber", equalTo("987543210"));
+    }
 }
