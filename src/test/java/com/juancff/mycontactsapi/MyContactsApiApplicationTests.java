@@ -37,9 +37,9 @@ class MyContactsApiApplicationTests {
 
     @Test
     public void when_get_an_existing_contact_by_id_returns_HTTP_status_code_ok() {
-        String EXPECTED_NAME = "Jane Doe";
-        String EXPECTED_PHONE_NUMBER = "987543210";
-        var contactId = postNewContact(EXPECTED_NAME, EXPECTED_PHONE_NUMBER);
+        String expectedName = "Jane Doe";
+        String expectedPhoneNumber = "987543210";
+        var contactId = postNewContact(expectedName, expectedPhoneNumber);
 
         given()
             .pathParams("contactId", contactId)
@@ -49,8 +49,8 @@ class MyContactsApiApplicationTests {
             .statusCode(200)
             .contentType(ContentType.JSON)
             .body("contactId", equalTo(contactId))
-            .body("name", equalTo(EXPECTED_NAME))
-            .body("phoneNumber", equalTo(EXPECTED_PHONE_NUMBER));
+            .body("name", equalTo(expectedName))
+            .body("phoneNumber", equalTo(expectedPhoneNumber));
     }
 
     @Test
@@ -78,12 +78,12 @@ class MyContactsApiApplicationTests {
 
     @Test
     public void when_get_all_contacts_with_some_added_contact_returns_HTTP_status_code_ok() {
-        String EXPECTED_NAME1 = "John Doe";
-        String EXPECTED_NAME2 = "Jane Doe";
-        String EXPECTED_PHONE_NUMBER1 = "123457890";
-        String EXPECTED_PHONE_NUMBER2 = "987543210";
-        var contactId1 = postNewContact(EXPECTED_NAME1, EXPECTED_PHONE_NUMBER1);
-        var contactId2 = postNewContact(EXPECTED_NAME2, EXPECTED_PHONE_NUMBER2);
+        String expectedName1 = "John Doe";
+        String expectedName2 = "Jane Doe";
+        String expectedPhoneNumber1 = "123457890";
+        String expectedPhoneNumber2 = "987543210";
+        var contactId1 = postNewContact(expectedName1, expectedPhoneNumber1);
+        var contactId2 = postNewContact(expectedName2, expectedPhoneNumber2);
 
         given()
         .when()
@@ -92,8 +92,8 @@ class MyContactsApiApplicationTests {
             .statusCode(200)
             .contentType(ContentType.JSON)
             .body("contactId", contains(contactId1, contactId2))
-            .body("name", contains(EXPECTED_NAME1, EXPECTED_NAME2))
-            .body("phoneNumber", contains(EXPECTED_PHONE_NUMBER1, EXPECTED_PHONE_NUMBER2))
+            .body("name", contains(expectedName1, expectedName2))
+            .body("phoneNumber", contains(expectedPhoneNumber1, expectedPhoneNumber2))
             .body("size()", is(2));
     }
 
