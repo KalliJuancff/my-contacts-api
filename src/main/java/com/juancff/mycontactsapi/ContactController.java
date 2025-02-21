@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,5 +35,10 @@ public class ContactController {
 
         ContactDetailsResponse response = new ContactDetailsResponse(contactId, contact.name(), contact.phoneNumber());
         return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/contacts")
+    public List<ContactDetailsResponse> getContacts() {
+        return List.of();
     }
 }

@@ -23,11 +23,11 @@ class MyContactsApiApplicationTests {
     @Test
     public void when_post_a_new_contact_returns_HTTP_status_code_created() {
         String requestBody = """
-                {
-                    "name": "John Doe",
-                    "phoneNumber": "123457890"
-                }
-                """;
+            {
+                "name": "John Doe",
+                "phoneNumber": "123457890"
+            }
+            """;
         given()
             .contentType(ContentType.JSON)
             .body(requestBody)
@@ -76,5 +76,15 @@ class MyContactsApiApplicationTests {
         .then()
             .statusCode(404)
             .body("error", equalTo("Contact not found"));
+    }
+
+    @Test
+    public void when_get_all_contacts_without_any_added_contact_returns_HTTP_status_code_ok() {
+        given()
+        .when()
+            .get("/contacts")
+        .then()
+            .statusCode(200)
+            .body("size()", is(0));
     }
 }
