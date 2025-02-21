@@ -120,10 +120,13 @@ class MyContactsApiApplicationTests {
             .path("contactId");
 
         given()
-            .when()
-                .get("/contacts")
-            .then()
-                .statusCode(200)
-                .body("size()", is(2));
+        .when()
+            .get("/contacts")
+        .then()
+            .statusCode(200)
+            .body("contactId", contains(contactId1, contactId2))
+            .body("name", contains("John Doe", "Jane Doe"))
+            .body("phoneNumber", contains("123457890", "987543210"))
+            .body("size()", is(2));
     }
 }

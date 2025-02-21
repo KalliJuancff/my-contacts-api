@@ -40,7 +40,7 @@ public class ContactController {
     @GetMapping("/contacts")
     public List<ContactDetailsResponse> getContacts() {
         return items.values().stream()
-            .map(contact -> new ContactDetailsResponse(7, "Xxxxxxx", "777777777"))
+            .map(contact -> new ContactDetailsResponse(contact.id(), contact.name(), contact.phoneNumber()))
             .toList();
     }
 }
