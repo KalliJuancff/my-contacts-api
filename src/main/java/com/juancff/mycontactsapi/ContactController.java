@@ -16,7 +16,7 @@ public class ContactController {
 
     @PostMapping("/contacts")
     public ResponseEntity<ContactResponse> createContact(@RequestBody ContactRequest request) {
-        Contact contact = addContact(request);
+        Contact contact = save(request);
         var contactId = contact.id();
 
         URI location = URI.create("/contacts/" + contactId);
@@ -43,7 +43,7 @@ public class ContactController {
             .toList();
     }
 
-    private Contact addContact(ContactRequest request) {
+    private Contact save(ContactRequest request) {
         var contactId = items.size() + 1;
         Contact contact = new Contact(contactId, request.name(), request.phoneNumber());
         items.put(contactId, contact);
