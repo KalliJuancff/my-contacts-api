@@ -5,18 +5,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 public class ContactController {
-    private final Map<Integer, Contact> items = new HashMap<>();
+    private final InMemoryContactRepository repository;
+
+    public ContactController() {
+        this.repository = new InMemoryContactRepository();
+    }
 
     @PostMapping("/contacts")
     public ResponseEntity<ContactResponse> createContact(@RequestBody ContactRequest request) {
-        Contact contact = save(request.name(), request.phoneNumber());
+        Contact contact = repository.save(request.name(), request.phoneNumber());
         var contactId = contact.id();
 
         URI location = URI.create("/contacts/" + contactId);
@@ -26,7 +28,7 @@ public class ContactController {
 
     @GetMapping("/contacts/{contactId}")
     public ResponseEntity<?> getContact(@PathVariable int contactId) {
-        var contact = findById(contactId);
+        var contact = repository.findById(contactId);
         if (contact == null) {
             Map<String, String> map = Map.of("error", "Contact not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
@@ -38,23 +40,8 @@ public class ContactController {
 
     @GetMapping("/contacts")
     public List<ContactDetailsResponse> getContacts() {
-        return findAll().stream()
+        return repository.findAll().stream()
             .map(contact -> new ContactDetailsResponse(contact.id(), contact.name(), contact.phoneNumber()))
             .toList();
-    }
-
-    private Contact save(String name, String phoneNumber) {
-        var contactId = items.size() + 1;
-        Contact contact = new Contact(contactId, name, phoneNumber);
-        items.put(contactId, contact);
-        return contact;
-    }
-
-    private Contact findById(int contactId) {
-        return items.get(contactId);
-    }
-
-    private Collection<Contact> findAll() {
-        return items.values();
     }
 }
