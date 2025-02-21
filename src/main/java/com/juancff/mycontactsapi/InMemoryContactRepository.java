@@ -9,12 +9,13 @@ import java.util.Map;
 @Repository
 public class InMemoryContactRepository implements ContactRepository {
     private final Map<Integer, Contact> items = new HashMap<>();
+    private int nextId = 1;
 
     @Override
     public Contact save(String name, String phoneNumber) {
-        var contactId = items.size() + 1;
-        Contact contact = new Contact(contactId, name, phoneNumber);
-        items.put(contactId, contact);
+        Contact contact = new Contact(nextId, name, phoneNumber);
+        items.put(nextId, contact);
+        nextId++;
         return contact;
     }
 
