@@ -78,24 +78,12 @@ class MyContactsApiApplicationTests {
 
     @Test
     public void when_get_all_contacts_with_some_added_contact_returns_HTTP_status_code_ok() {
-        String requestBody1 = contactAsJson("John Doe", "123457890");
-        String requestBody2 = contactAsJson("Jane Doe", "987543210");
-        var contactId1 = given()
-            .contentType(ContentType.JSON)
-            .body(requestBody1)
-        .when()
-            .post("/contacts")
-        .then()
-            .extract()
-            .path("contactId");
-        var contactId2 = given()
-            .contentType(ContentType.JSON)
-            .body(requestBody2)
-        .when()
-            .post("/contacts")
-        .then()
-            .extract()
-            .path("contactId");
+        String EXPECTED_NAME1 = "John Doe";
+        String EXPECTED_NAME2 = "Jane Doe";
+        String EXPECTED_PHONE_NUMBER1 = "123457890";
+        String EXPECTED_PHONE_NUMBER2 = "987543210";
+        var contactId1 = postNewContact(EXPECTED_NAME1, EXPECTED_PHONE_NUMBER1);
+        var contactId2 = postNewContact(EXPECTED_NAME2, EXPECTED_PHONE_NUMBER2);
 
         given()
         .when()
@@ -104,8 +92,8 @@ class MyContactsApiApplicationTests {
             .statusCode(200)
             .contentType(ContentType.JSON)
             .body("contactId", contains(contactId1, contactId2))
-            .body("name", contains("John Doe", "Jane Doe"))
-            .body("phoneNumber", contains("123457890", "987543210"))
+            .body("name", contains(EXPECTED_NAME1, EXPECTED_NAME2))
+            .body("phoneNumber", contains(EXPECTED_PHONE_NUMBER1, EXPECTED_PHONE_NUMBER2))
             .body("size()", is(2));
     }
 
