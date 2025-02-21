@@ -22,12 +22,7 @@ class MyContactsApiApplicationTests {
 
     @Test
     public void when_post_a_new_contact_returns_HTTP_status_code_created() {
-        String requestBody = """
-            {
-                "name": "John Doe",
-                "phoneNumber": "123457890"
-            }
-            """;
+        String requestBody = contactAsJson("John Doe", "123457890");
         given()
             .contentType(ContentType.JSON)
             .body(requestBody)
@@ -41,12 +36,7 @@ class MyContactsApiApplicationTests {
 
     @Test
     public void when_get_an_existing_contact_by_id_returns_HTTP_status_code_ok() {
-        String requestBody = """
-            {
-                "name": "Jane Doe",
-                "phoneNumber": "987543210"
-            }
-            """;
+        String requestBody = contactAsJson("Jane Doe", "987543210");
         var contactId = given()
             .contentType(ContentType.JSON)
             .body(requestBody)
@@ -90,18 +80,8 @@ class MyContactsApiApplicationTests {
 
     @Test
     public void when_get_all_contacts_with_some_added_contact_returns_HTTP_status_code_ok() {
-        String requestBody1 = """
-            {
-                "name": "John Doe",
-                "phoneNumber": "123457890"
-            }
-            """;
-        String requestBody2 = """
-            {
-                "name": "Jane Doe",
-                "phoneNumber": "987543210"
-            }
-            """;
+        String requestBody1 = contactAsJson("John Doe", "123457890");
+        String requestBody2 = contactAsJson("Jane Doe", "987543210");
         var contactId1 = given()
             .contentType(ContentType.JSON)
             .body(requestBody1)
@@ -128,5 +108,15 @@ class MyContactsApiApplicationTests {
             .body("name", contains("John Doe", "Jane Doe"))
             .body("phoneNumber", contains("123457890", "987543210"))
             .body("size()", is(2));
+    }
+
+    private static String contactAsJson(String name, String phoneNumber) {
+        String requestBody = """
+            {
+                "name": "%s",
+                "phoneNumber": "%s"
+            }
+            """;
+        return requestBody.formatted(name, phoneNumber);
     }
 }
