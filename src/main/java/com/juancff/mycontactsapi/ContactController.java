@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class ContactController {
 
     @GetMapping("/contacts")
     public List<ContactDetailsResponse> getContacts() {
-        return items.values().stream()
+        return findAll().stream()
             .map(contact -> new ContactDetailsResponse(contact.id(), contact.name(), contact.phoneNumber()))
             .toList();
     }
@@ -51,5 +52,9 @@ public class ContactController {
 
     private Contact findById(int contactId) {
         return items.get(contactId);
+    }
+
+    private Collection<Contact> findAll() {
+        return items.values();
     }
 }
