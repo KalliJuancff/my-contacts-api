@@ -37,15 +37,9 @@ class MyContactsApiApplicationTests {
 
     @Test
     public void when_get_an_existing_contact_by_id_returns_HTTP_status_code_ok() {
-        String requestBody = contactAsJson("Jane Doe", "987543210");
-        var contactId = given()
-            .contentType(ContentType.JSON)
-            .body(requestBody)
-        .when()
-            .post("/contacts")
-        .then()
-            .extract()
-            .path("contactId");
+        String EXPECTED_NAME = "Jane Doe";
+        String EXPECTED_PHONE_NUMBER = "987543210";
+        var contactId = postNewContact(EXPECTED_NAME, EXPECTED_PHONE_NUMBER);
 
         given()
             .pathParams("contactId", contactId)
@@ -55,8 +49,8 @@ class MyContactsApiApplicationTests {
             .statusCode(200)
             .contentType(ContentType.JSON)
             .body("contactId", equalTo(contactId))
-            .body("name", equalTo("Jane Doe"))
-            .body("phoneNumber", equalTo("987543210"));
+            .body("name", equalTo(EXPECTED_NAME))
+            .body("phoneNumber", equalTo(EXPECTED_PHONE_NUMBER));
     }
 
     @Test
@@ -113,6 +107,19 @@ class MyContactsApiApplicationTests {
             .body("name", contains("John Doe", "Jane Doe"))
             .body("phoneNumber", contains("123457890", "987543210"))
             .body("size()", is(2));
+    }
+
+    private static Object postNewContact(String EXPECTED_NAME, String EXPECTED_PHONE_NUMBER) {
+        String requestBody = contactAsJson(EXPECTED_NAME, EXPECTED_PHONE_NUMBER);
+
+        return given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+            .when()
+                .post("/contacts")
+            .then()
+                .extract()
+                .path("contactId");
     }
 
     private static String contactAsJson(String name, String phoneNumber) {
