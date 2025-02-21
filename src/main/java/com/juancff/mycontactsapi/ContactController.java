@@ -15,10 +15,8 @@ public class ContactController {
 
     @PostMapping("/contacts")
     public ResponseEntity<ContactResponse> createContact(@RequestBody ContactRequest request) {
-        var contactId = items.size() + 1;
-
-        Contact contact = new Contact(contactId, request.name(), request.phoneNumber());
-        items.put(contactId, contact);
+        Contact contact = addContact(request);
+        var contactId = contact.id();
 
         URI location = URI.create("/contacts/" + contactId);
         ContactResponse response = new ContactResponse(contactId);
@@ -42,5 +40,12 @@ public class ContactController {
         return items.values().stream()
             .map(contact -> new ContactDetailsResponse(contact.id(), contact.name(), contact.phoneNumber()))
             .toList();
+    }
+
+    private Contact addContact(ContactRequest request) {
+        var contactId = items.size() + 1;
+        Contact contact = new Contact(contactId, request.name(), request.phoneNumber());
+        items.put(contactId, contact);
+        return contact;
     }
 }
