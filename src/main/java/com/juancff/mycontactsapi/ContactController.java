@@ -12,8 +12,8 @@ import java.util.Map;
 public class ContactController {
     private final ContactRepository repository;
 
-    public ContactController() {
-        this.repository = new InMemoryContactRepository();
+    public ContactController(ContactRepository repository) {
+        this.repository = repository;
     }
 
     @PostMapping("/contacts")

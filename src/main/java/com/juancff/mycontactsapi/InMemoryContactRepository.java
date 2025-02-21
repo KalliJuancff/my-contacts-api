@@ -1,9 +1,12 @@
 package com.juancff.mycontactsapi;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@Repository
 public class InMemoryContactRepository implements ContactRepository {
     private final Map<Integer, Contact> items = new HashMap<>();
 
