@@ -30,6 +30,7 @@ class MyContactsApiApplicationTests {
             .post("/contacts")
         .then()
             .statusCode(201)
+            .contentType(ContentType.JSON)
             .header("Location", matchesPattern("/contacts/[0-9]+"))
             .body("contactId", notNullValue());
     }
@@ -52,6 +53,7 @@ class MyContactsApiApplicationTests {
             .get("/contacts/{contactId}")
         .then()
             .statusCode(200)
+            .contentType(ContentType.JSON)
             .body("contactId", equalTo(contactId))
             .body("name", equalTo("Jane Doe"))
             .body("phoneNumber", equalTo("987543210"));
@@ -65,6 +67,7 @@ class MyContactsApiApplicationTests {
             .get("/contacts/{contactId}")
         .then()
             .statusCode(404)
+            .contentType(ContentType.JSON)
             .body("error", equalTo("Contact not found"));
     }
 
@@ -75,6 +78,7 @@ class MyContactsApiApplicationTests {
             .get("/contacts")
         .then()
             .statusCode(200)
+            .contentType(ContentType.JSON)
             .body("size()", is(0));
     }
 
@@ -104,6 +108,7 @@ class MyContactsApiApplicationTests {
             .get("/contacts")
         .then()
             .statusCode(200)
+            .contentType(ContentType.JSON)
             .body("contactId", contains(contactId1, contactId2))
             .body("name", contains("John Doe", "Jane Doe"))
             .body("phoneNumber", contains("123457890", "987543210"))
