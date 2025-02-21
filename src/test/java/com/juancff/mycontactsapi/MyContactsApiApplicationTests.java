@@ -21,7 +21,7 @@ class MyContactsApiApplicationTests {
     }
 
     @Test
-    public void when_post_a_new_contact_then_return_location_and_HTTP_status_code_of_created() {
+    public void when_post_a_new_contact_returns_HTTP_status_code_created() {
         String requestBody = """
                 {
                     "name": "John Doe",
@@ -40,7 +40,7 @@ class MyContactsApiApplicationTests {
     }
 
     @Test
-    public void when_get_an_existing_contact_by_id_then_return_contact_data_and_HTTP_status_code_of_ok() {
+    public void when_get_an_existing_contact_by_id_returns_HTTP_status_code_ok() {
         String requestBody = """
             {
                 "name": "Jane Doe",
@@ -53,7 +53,6 @@ class MyContactsApiApplicationTests {
         .when()
             .post("/contacts")
         .then()
-            .statusCode(201)
             .extract()
             .path("contactId");
 
@@ -69,7 +68,7 @@ class MyContactsApiApplicationTests {
     }
 
     @Test
-    public void when_get_a_non_existing_contact_by_id_then_return_HTTP_status_code_of_not_found() {
+    public void when_get_a_non_existing_contact_by_id_returns_HTTP_status_code_not_found() {
         given()
             .pathParams("contactId", 999)
         .when()
