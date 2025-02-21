@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class ContactController {
@@ -28,12 +29,13 @@ public class ContactController {
 
     @GetMapping("/contacts/{contactId}")
     public ResponseEntity<?> getContact(@PathVariable int contactId) {
-        var contact = repository.findById(contactId);
-        if (contact == null) {
+        Optional<Contact> optionalContact = repository.findById(contactId);
+        if (optionalContact.isEmpty()) {
             Map<String, String> map = Map.of("error", "Contact not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
         }
 
+        Contact contact = optionalContact.get();
         ContactDetailsResponse response = new ContactDetailsResponse(contactId, contact.name(), contact.phoneNumber());
         return ResponseEntity.ok().body(response);
     }

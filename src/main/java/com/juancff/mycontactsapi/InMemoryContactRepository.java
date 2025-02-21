@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class InMemoryContactRepository implements ContactRepository {
@@ -20,8 +21,8 @@ public class InMemoryContactRepository implements ContactRepository {
     }
 
     @Override
-    public Contact findById(int contactId) {
-        return items.get(contactId);
+    public Optional<Contact> findById(int contactId) {
+        return Optional.ofNullable(items.get(contactId));
     }
 
     @Override
