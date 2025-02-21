@@ -30,7 +30,7 @@ class MyContactsApiApplicationTests {
             .post("/contacts")
         .then()
             .statusCode(201)
-            .header("Location", startsWith("/contacts/"))
+            .header("Location", matchesPattern("/contacts/[0-9]+"))
             .body("contactId", notNullValue());
     }
 
