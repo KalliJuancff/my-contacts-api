@@ -25,7 +25,7 @@ public class ContactController {
 
     @GetMapping("/contacts/{contactId}")
     public ResponseEntity<?> getContact(@PathVariable int contactId) {
-        var contact = items.get(contactId);
+        var contact = findById(contactId);
         if (contact == null) {
             Map<String, String> map = Map.of("error", "Contact not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
@@ -47,5 +47,9 @@ public class ContactController {
         Contact contact = new Contact(contactId, request.name(), request.phoneNumber());
         items.put(contactId, contact);
         return contact;
+    }
+
+    private Contact findById(int contactId) {
+        return items.get(contactId);
     }
 }
