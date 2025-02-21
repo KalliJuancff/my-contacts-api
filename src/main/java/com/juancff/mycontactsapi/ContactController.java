@@ -39,6 +39,8 @@ public class ContactController {
 
     @GetMapping("/contacts")
     public List<ContactDetailsResponse> getContacts() {
-        return List.of();
+        return items.values().stream()
+            .map(contact -> new ContactDetailsResponse(7, "Xxxxxxx", "777777777"))
+            .toList();
     }
 }

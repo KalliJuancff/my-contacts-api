@@ -87,4 +87,43 @@ class MyContactsApiApplicationTests {
             .statusCode(200)
             .body("size()", is(0));
     }
+
+    @Test
+    public void when_get_all_contacts_with_some_added_contact_returns_HTTP_status_code_ok() {
+        String requestBody1 = """
+            {
+                "name": "John Doe",
+                "phoneNumber": "123457890"
+            }
+            """;
+        String requestBody2 = """
+            {
+                "name": "Jane Doe",
+                "phoneNumber": "987543210"
+            }
+            """;
+        var contactId1 = given()
+            .contentType(ContentType.JSON)
+            .body(requestBody1)
+        .when()
+            .post("/contacts")
+        .then()
+            .extract()
+            .path("contactId");
+        var contactId2 = given()
+            .contentType(ContentType.JSON)
+            .body(requestBody2)
+        .when()
+            .post("/contacts")
+        .then()
+            .extract()
+            .path("contactId");
+
+        given()
+            .when()
+                .get("/contacts")
+            .then()
+                .statusCode(200)
+                .body("size()", is(2));
+    }
 }
