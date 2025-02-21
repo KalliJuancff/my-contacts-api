@@ -10,7 +10,7 @@ import java.util.Map;
 
 @RestController
 public class ContactController {
-    private final InMemoryContactRepository repository;
+    private final ContactRepository repository;
 
     public ContactController() {
         this.repository = new InMemoryContactRepository();
